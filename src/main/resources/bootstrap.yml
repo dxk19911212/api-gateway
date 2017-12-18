@@ -1,0 +1,48 @@
+spring:
+    application:
+        name: api-gateway
+server:
+    port: 5555
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://eureka.iishoni.com/eureka/
+
+zuul:
+    # 忽略zuul的自动路由创建
+    ignored-services: '*'
+    # 忽略自定规则的url路由
+    ignored-patterns: /**/hi/**
+    # 路由前缀
+    prefix: /api
+    # 移除所有 路由前缀
+#    strip-prefix: false
+    routes:
+        # 衍生的子项目url路由访问优先级，按照顺序执行
+#        hello-service-ext: /a/ext/**
+        hello-service@env@: /a/**
+        feign-consumer@env@: /b/**
+        # 本地跳转
+        local-url:
+            path: /local/**
+            url: forward:/local
+    # 禁用过滤器
+    AccessFilter.pre.disable: true
+    # 是否开启全局重试机制
+    retryable: true
+
+hystrix:
+    command:
+        default:
+            execution:
+                isolation:
+                    thread:
+                        timeoutInMilliseconds: 2000
+
+ribbon:
+    ConnectTimeout: 500
+    ReadTimeout: 1000
+    OkToRetryOnAllOperations: true
+    MaxAutoRetries: 1
+    MaxAutoRetriesNextServer: 2
