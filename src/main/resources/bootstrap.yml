@@ -2,12 +2,19 @@ spring:
     application:
         name: @project.artifactId@
 server:
-    port: 8001
+    port: 8888
 
 eureka:
     client:
         serviceUrl:
             defaultZone: http://eureka.iishoni.com/eureka/
+        healthcheck:
+            enabled: true # 开启健康检查
+        registry-fetch-interval-seconds: 10 # 更新服务注册信息的间隔时间，默认30s
+    instance:
+        prefer-ip-address: true
+        instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+        status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/swagger-ui.html
 
 zuul:
     # 忽略zuul的自动路由创建
