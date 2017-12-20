@@ -13,6 +13,7 @@ eureka:
         registry-fetch-interval-seconds: 10 # 更新服务注册信息的间隔时间，默认30s
     instance:
         prefer-ip-address: true
+        hostname: ${spring.cloud.client.ipAddress}
         instance-id: ${spring.cloud.client.ipAddress}:${server.port}
         status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/swagger-ui.html
 
