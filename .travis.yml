@@ -1,0 +1,33 @@
+sudo: required
+
+language: java
+
+jdk:
+  - oraclejdk8
+
+services:
+  - docker
+
+env:
+  global:
+    - DOCKER_USER: admin
+    - DOCKER_PASS: admin
+    - DEPLOY_USER: root
+    - DEPLOY_HOST: 120.78.150.87
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_0656487994ff_key -iv $encrypted_0656487994ff_iv -in id_rsa.enc -out ~/.ssh/id_rsa -d
+  - chmod 600 ~/.ssh/id_rsa
+  - echo -e "Host $DEPLOY_HOST\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - sed -i '/<repositories>/ a <repository><id>iishoni-central</id><url>http://arti.iishoni.com/artifactory/release/</url><snapshots><enabled>false</enabled></snapshots></repository><repository><id>iishoni-snapshots</id><url>http://arti.iishoni.com/artifactory/snapshot/</url><releases><enabled>false</enabled></releases></repository>' $HOME/.m2/settings.xml
+
+install:
+  - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS" registry.iishoni.com
+  - mvn clean package -DskipTests docker:build -DpushImage
+
+script:
+  - mvn clean
+
+after_success:
+  - docker images
+  - ssh $DEPLOY_USER@$DEPLOY_HOST 'cd /app/cloud/ && sh docker-deploy.sh api-gateway'

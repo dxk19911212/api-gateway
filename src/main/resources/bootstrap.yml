@@ -1,8 +1,8 @@
 spring:
     application:
-        name: api-gateway
+        name: @project.artifactId@
 server:
-    port: 5555
+    port: 8001
 
 eureka:
     client:
