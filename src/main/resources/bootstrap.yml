@@ -2,7 +2,7 @@ spring:
     application:
         name: @project.artifactId@
 server:
-    port: 8888
+    port: 8001
 
 eureka:
     client:
