@@ -10,6 +10,11 @@ services:
 
 group: deprecated-2017Q4
 
+cache:
+  directories:
+  - .autoconf
+  - $HOME/.m2
+
 env:
   global:
     - DOCKER_USER: admin
