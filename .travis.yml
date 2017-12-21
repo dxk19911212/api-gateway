@@ -16,6 +16,11 @@ cache:
   - .autoconf
   - $HOME/.m2
 
+before_cache:
+  - ls $HOME/.cache
+  - ls $HOME/.m2
+#  - rm -f $HOME/.cache/pip/log/debug.log
+
 env:
   global:
     - DOCKER_USER: admin
