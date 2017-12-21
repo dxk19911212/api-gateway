@@ -8,11 +8,10 @@ eureka:
     client:
         serviceUrl:
             defaultZone: http://eureka.iishoni.com/eureka/
-#        healthcheck:
-#            enabled: true # 开启健康检查
         registry-fetch-interval-seconds: 10 # 更新服务注册信息的间隔时间，默认30s
     instance:
-        instance-id: ${spring.cloud.client.hostname}:${server.port}
+        prefer-ip-address: true
+        instance-id: ${spring.cloud.client.ipAddress}:${server.port}
         status-page-url: http://${eureka.instance.hostname:localhost}:${server.port}/swagger-ui.html
 
 zuul:
