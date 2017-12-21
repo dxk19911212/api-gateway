@@ -13,8 +13,8 @@ cache:
   - .autoconf
   - $HOME/.m2
 
-#before_cache:
-#  - rm -f $HOME/.m2/repository/com/iishoni
+before_cache:
+  - rm -f $HOME/.m2/repository/com/iishoni
 
 env:
   global:
@@ -28,7 +28,6 @@ before_install:
   - chmod 600 ~/.ssh/id_rsa
   - echo -e "Host $DEPLOY_HOST\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   - sed -i '/<repositories>/ a <repository><id>iishoni-central</id><url>http://arti.iishoni.com/artifactory/release/</url><snapshots><enabled>false</enabled></snapshots></repository><repository><id>iishoni-snapshots</id><url>http://arti.iishoni.com/artifactory/snapshot/</url><releases><enabled>false</enabled></releases></repository>' $HOME/.m2/settings.xml
-  - ls $HOME/.m2/repository/com/iishoni
 
 install:
   - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS" registry.iishoni.com
