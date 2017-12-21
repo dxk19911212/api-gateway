@@ -8,6 +8,8 @@ jdk:
 services:
   - docker
 
+group: deprecated-2017Q4
+
 env:
   global:
     - DOCKER_USER: admin
